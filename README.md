@@ -2,16 +2,6 @@
 
 Runs a real session and classifies its observed stop reason. The sample displays pauses; it does not implement approvals, resume or remote interrupt cleanup.
 
-## Student pages
-
-- [What you will learn](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/public/guide.html#learning)
-- [How to run this application](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/public/guide.html#run-guide)
-- [Architecture, UML sequence diagram and code walkthrough](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/public/architecture.html)
-- [Application lab source](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/public/index.html)
-- [Sequence diagram](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/public/architecture.svg)
-
-These GitHub links open source files. Start the Node application to use the rendered pages and navigation buttons. GitHub Pages cannot run this application's backend.
-
 ## Concepts students will learn
 
 - Idle is not always completed
