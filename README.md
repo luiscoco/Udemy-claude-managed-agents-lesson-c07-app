@@ -42,17 +42,20 @@ CLAUDE_MANAGED_ENVIRONMENT_ID=your_environment_id
 PORT=3007
 ```
 
-## How the application was developed
+## How the app was build
 
-The browser collects inputs; the Node host validates requests; the lesson implementation produces observable evidence. The architecture page walks through the real source with numbered steps, prerequisite configuration, source filenames and code excerpts.
+### 1. Classify lifecycle and stop reason together
 
-### Lesson implementation
+Terminated, incomplete, requires-action, budget pause and ordinary end_turn have different outcomes. The interrupted flag is an input to the classifier; the current web path passes false and does not implement a cancellation workflow.
 
-[src/outcome.ts](https://github.com/luiscoco/Udemy-claude-managed-agents-lesson-c07-app/blob/main/src/outcome.ts)
+Source: [src/outcome.ts](src/outcome.ts#L2)
 
 ```typescript
-export type Outcome = "completed" | "interrupted" | "paused-budget" | "requires-action" | "error" | "terminated" | "incomplete";
-export function classify(status: string, reason: string | undefined, interrupted: boolean): Outcome {
+export function classify(
+  status: string,
+  reason: string | undefined,
+  interrupted: boolean,
+): Outcome {
   if (status === "terminated") return "terminated";
   if (status !== "idle") return "incomplete";
   if (reason === "requires_action") return "requires-action";
@@ -62,7 +65,19 @@ export function classify(status: string, reason: string | undefined, interrupted
 }
 ```
 
-Read the architecture page for the remaining source excerpts and explanations, including input handling and optional provider behavior. The diagram describes this application, rather than implying that an external integration has been implemented.
+### 2. Apply the classifier to observed idle state
+
+The stream handler sends both the stop reason and classified outcome to the browser. A pause does not become completed merely because some answer text was received.
+
+Source: [src/server.ts](src/server.ts#L27)
+
+```typescript
+if (event.type === "session.status_idle") {
+  outcome = classify("idle", event.stop_reason.type, false);
+  send("reason", event.stop_reason.type);
+  break;
+}
+```
 
 ## Validation
 
